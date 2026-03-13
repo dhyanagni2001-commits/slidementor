@@ -184,9 +184,5 @@ Test: `https://YOUR_HF_USERNAME-slidementor.hf.space/health` → `{"status":"ok"
 
 ---
 
-## License
 
-MIT
-
----
 
