@@ -6,7 +6,7 @@
 // ─── Config ────────────────────────────────────────────────────────────────
 
 const CONFIG = {
-  BACKEND_URL: "http://localhost:8000", // Update after deploy
+  BACKEND_URL: "https://dhyan19-slidementor-api.hf.space", // Update after deploy
   REQUEST_TIMEOUT_MS: 25000,
   MAX_RETRIES: 1,
 };

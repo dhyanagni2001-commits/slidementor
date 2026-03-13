@@ -4,7 +4,7 @@
   "use strict";
 
   const PANEL_ID = "sm-root-panel";
-  const BACKEND_URL = "http://localhost:8000";
+  const BACKEND_URL = "https://dhyan19-slidementor-api.hf.space";
   let panelOpen = false;
   let lastExplanation = "";
   let lastPdfData = null;
@@ -401,7 +401,7 @@
       .filter(t => t.content && t.content.trim().length > 0)
       .map(t => ({ role: t.role, content: String(t.content).slice(0, 1500) }));
 
-    const res = await fetch("http://localhost:8000/chat", {
+    const res = await fetch(`${BACKEND_URL}/chat`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
