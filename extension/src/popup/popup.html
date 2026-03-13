@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SlideMentor</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&display=swap');
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      width: 280px;
+      background: #0d0f14;
+      color: #e8e4d9;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      padding: 0;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #1a1d26 0%, #12141c 100%);
+      padding: 18px 20px 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    .logo-mark {
+      font-size: 20px;
+      color: #c8a96e;
+      line-height: 1;
+    }
+
+    .logo-text {
+      font-family: 'DM Serif Display', serif;
+      font-size: 18px;
+      color: #e8e4d9;
+      letter-spacing: 0.02em;
+    }
+
+    .tagline {
+      font-size: 11px;
+      color: #6b6f7e;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .status-section {
+      padding: 16px 20px 8px;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: #6b6f7e;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 20px;
+      padding: 4px 10px;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #4CAF50;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .platform-info {
+      margin-top: 12px;
+      padding: 12px;
+      background: rgba(200, 169, 110, 0.06);
+      border: 1px solid rgba(200, 169, 110, 0.15);
+      border-radius: 8px;
+    }
+
+    .platform-label {
+      font-size: 10px;
+      color: #c8a96e;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 4px;
+    }
+
+    .platform-name {
+      font-size: 13px;
+      color: #e8e4d9;
+      font-weight: 500;
+    }
+
+    .actions {
+      padding: 12px 20px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: 8px;
+      border: none;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+
+    .btn-primary {
+      background: #c8a96e;
+      color: #0d0f14;
+    }
+
+    .btn-primary:hover {
+      background: #d9bc85;
+      transform: translateY(-1px);
+    }
+
+    .btn-ghost {
+      background: rgba(255,255,255,0.05);
+      color: #a0a4b0;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .btn-ghost:hover {
+      background: rgba(255,255,255,0.09);
+      color: #e8e4d9;
+    }
+
+    .footer {
+      padding: 12px 20px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-link {
+      font-size: 11px;
+      color: #454850;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-link:hover { color: #c8a96e; }
+
+    #platform-text { transition: all 0.3s; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">
+      <span class="logo-mark">✦</span>
+      <span class="logo-text">SlideMentor</span>
+    </div>
+    <p class="tagline">AI-Powered Slide Intelligence</p>
+  </div>
+
+  <div class="status-section">
+    <div class="status-badge">
+      <div class="status-dot"></div>
+      <span>Connected · Groq LLaMA 3</span>
+    </div>
+    <div class="platform-info">
+      <div class="platform-label">Detected Platform</div>
+      <div class="platform-name" id="platform-text">Detecting…</div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="btn btn-primary" id="open-panel-btn">
+      ✦ Open SlideMentor Panel
+    </button>
+    <button class="btn btn-ghost" id="settings-btn">
+      ⚙ Settings
+    </button>
+  </div>
+
+  <div class="footer">
+    <a href="https://github.com/yourusername/slidementor" target="_blank" class="footer-link">GitHub</a>
+    <span class="footer-link">v1.0.0</span>
+    <a href="#" class="footer-link">Docs</a>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+{
+  "manifest_version": 3,
+  "name": "SlideMentor",
+  "version": "1.0.0",
+  "description": "AI-powered slide explainer",
+
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage",
+    "tabs",
+    "cookies",
+    "tabCapture"
+  ],
+
+  "host_permissions": [
+    "https://brightspace.usc.edu/*",
+    "https://*.brightspace.com/*",
+    "https://drive.google.com/*",
+    "https://docs.google.com/*",
+    "file:///*"
+  ],
+
+  "background": {
+    "service_worker": "src/background/worker.js"
+  },
+
+  "content_scripts": [
+    {
+      "matches": [
+        "https://brightspace.usc.edu/*",
+        "https://*.brightspace.com/*",
+        "https://docs.google.com/presentation/*",
+        "https://drive.google.com/*",
+        "file:///*"
+      ],
+      "js": [
+        "src/content/detector.js",
+        "src/content/extractor.js",
+        "src/content/highlighter.js",
+        "src/content/injector.js"
+      ],
+      "css": ["src/ui/panel.css"],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
+  ],
+
+  "action": {
+    "default_popup": "src/popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+
+  "web_accessible_resources": [
+    {
+      "resources": ["src/ui/panel.css", "icons/*"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
