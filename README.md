@@ -183,6 +183,7 @@ Test: `https://YOUR_HF_USERNAME-slidementor.hf.space/health` → `{"status":"ok"
 - Groq free tier: 6,000 tokens/min, 14,400 requests/day
 
 ---
-
+## Backend
+https://github.com/dhyanagni2001-commits/SlideMentor_Backend
 
 
