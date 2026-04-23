@@ -6,11 +6,9 @@
 
   "permissions": [
     "activeTab",
-    "storage",
     "tabs",
-    "cookies",
-    "tabCapture"
-  ],
+    "cookies"
+],
 
   "host_permissions": [
     "https://brightspace.usc.edu/*",

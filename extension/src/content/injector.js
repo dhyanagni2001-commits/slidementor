@@ -109,39 +109,60 @@
   // ─── Auto-fetch PDF ────────────────────────────────────────────────────────
 
   async function autoFetchPdf() {
-    const url = window.location.href;
-    let pdfUrl = url.includes(".pdf") ? url : await findEmbeddedPdfUrl();
-    if (!pdfUrl) {
-      setOutput("<div class='sm-placeholder'>No PDF detected. Upload one manually.</div>");
-      return;
-    }
-    setStatus("Auto-loading PDF…");
-    setOutput("<div class='sm-loading'><span class='sm-spinner'></span> Fetching PDF…</div>");
-    document.getElementById("sm-pdf-pages").innerHTML = "";
-    try {
-      const cookies = await getBrowserCookies(pdfUrl);
-      const res = await fetch(`${BACKEND_URL}/fetch-pdf-url`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url: pdfUrl, cookies }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.detail || "Fetch failed");
-      lastPdfData = data;
-      lastPdfFileName = data.filename || "slide.pdf";
-      renderPageButtons(data, lastPdfFileName);
-      setOutput(`<div class='sm-placeholder'>✓ PDF loaded (${data.total_pages} pages, ${data.chunks || 0} chunks indexed).<br>plain This Slide or pick a page.</div>`);
-      setStatus(`Loaded — ${data.total_pages} pages ✓`);
-    } catch (err) {
-      setOutput(`
-        <div style="text-align:center; padding:16px 10px;">
-          <p style="color:#f87171; font-size:12px; margin-bottom:8px;">Auto-load failed</p>
-          <p style="color:#6b6f7e; font-size:11px; margin-bottom:12px;">${escapeHtml(err.message)}</p>
-          <p style="color:#c8a96e; font-size:11px;">👆 Use Upload PDF instead</p>
-        </div>`);
-      setStatus("Ready");
-    }
+  const url = window.location.href;
+  const isSupported = url.includes("brightspace") || url.includes("blackboard") ||
+                      url.includes("canvas") || url.includes("drive.google") ||
+                      url.includes("docs.google") || url.includes(".pdf");
+
+  if (!isSupported) {
+    setOutput("<div class='sm-placeholder'>Navigate to a PDF or lecture page to begin.</div>");
+    return;
   }
+
+  let pdfUrl = url.includes(".pdf") ? url : await findEmbeddedPdfUrl();
+
+  if (!pdfUrl) {
+    setOutput("<div class='sm-placeholder'>No PDF detected.<br><small style='color:#6b6f7e'>Use Upload PDF to load manually.</small></div>");
+    setStatus("Ready");
+    return;
+  }
+
+  setStatus("Auto-loading PDF…");
+  setOutput("<div class='sm-loading'><span class='sm-spinner'></span> Fetching PDF…</div>");
+  document.getElementById("sm-pdf-pages").innerHTML = "";
+
+  try {
+    const cookies = await getBrowserCookies(pdfUrl);
+    const res = await fetch(`${BACKEND_URL}/fetch-pdf-url`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ url: pdfUrl, cookies }),
+    });
+
+    // Check JSON before parsing — Brightspace may return HTML login page
+    const contentType = res.headers.get("content-type") || "";
+    if (!contentType.includes("application/json")) {
+      throw new Error("Could not auto-load — use Upload PDF instead");
+    }
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || "Fetch failed");
+
+    lastPdfData = data;
+    lastPdfFileName = data.filename || "slides.pdf";
+    renderPageButtons(data, lastPdfFileName);
+    setOutput(`<div class='sm-placeholder'>✓ ${data.total_pages} pages loaded.<br><small style='color:#6b6f7e'>Click any page to explain it.</small></div>`);
+    setStatus(`${data.total_pages} pages ready ✓`);
+  } catch (err) {
+    setOutput(`
+      <div style="text-align:center; padding:16px 10px;">
+        <p style="color:#f87171; font-size:12px; margin-bottom:8px;">Auto-load failed</p>
+        <p style="color:#6b6f7e; font-size:11px; margin-bottom:12px;">${escapeHtml(err.message)}</p>
+        <p style="color:#c8a96e; font-size:11px;">👆 Use Upload PDF above instead</p>
+      </div>`);
+    setStatus("Ready");
+  }
+}
 
   async function findEmbeddedPdfUrl() {
     // Brightspace PDF.js viewer — PDF URL is in the iframe's ?file= param
